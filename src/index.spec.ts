@@ -1,7 +1,7 @@
 import "reflect-metadata";
 
 import { Container, ContainerModule, injectable, interfaces } from "inversify";
-import { getToken, injectToken, Token, tokenBinder, TokenType } from "./";
+import { getToken, injectToken, multiInjectToken, Token, tokenBinder, TokenType } from "./";
 
 // tslint:disable:max-classes-per-file
 
@@ -42,12 +42,12 @@ class Shuriken implements ThrowableWeapon {
 class Ninja implements Warrior {
 
   public constructor(
-    @injectToken(TOKENS.Weapon) private _katana: TokenType<typeof TOKENS["Weapon"]>,
+    @multiInjectToken(TOKENS.Weapon) private _katanas: Array<TokenType<typeof TOKENS["Weapon"]>>,
     @injectToken(TOKENS.ThrowableWeapon) private _shuriken: TokenType<typeof TOKENS["ThrowableWeapon"]>,
   ) {}
 
   public fight() {
-    return this._katana.hit();
+    return this._katanas.map((k) => k.hit()).join(" ");
   }
 
   public sneak() {
@@ -58,7 +58,7 @@ class Ninja implements Warrior {
 const testContainer = (c: interfaces.Container) => {
   const ninja = getToken(c, TOKENS.Warrior);
 
-  if (ninja.fight() !== "cut!") {
+  if (ninja.fight() !== "cut! cut!") {
     throw new Error("Unexpected value for ninja fighting!");
   }
   if (ninja.sneak() !== "hit!") {
@@ -71,6 +71,7 @@ const bindToken = tokenBinder(myContainer.bind.bind(myContainer) as typeof myCon
 bindToken(TOKENS.ThrowableWeapon).to(Shuriken);
 bindToken(TOKENS.Warrior).to(Ninja);
 bindToken(TOKENS.Weapon).to(Katana);
+bindToken(TOKENS.Weapon).to(Katana);
 testContainer(myContainer);
 
 const moduleContainer = new Container();
@@ -80,9 +81,10 @@ const module = new ContainerModule((bind) => {
   bindToken(TOKENS.ThrowableWeapon).to(Shuriken);
   bindToken(TOKENS.Warrior).to(Ninja);
   bindToken(TOKENS.Weapon).to(Katana);
+  bindToken(TOKENS.Weapon).to(Katana);
 });
 moduleContainer.load(module);
 testContainer(moduleContainer);
 
 // tslint:disable-next-line:no-console
-console.log("***TESTS SUCCESSFUL***");
+console.log("*** TESTS SUCCESSFUL ***");

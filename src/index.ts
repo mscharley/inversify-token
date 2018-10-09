@@ -1,7 +1,7 @@
-import { inject, interfaces } from "inversify";
+import { inject, interfaces, multiInject } from "inversify";
 
 /**
- * Foo.
+ * A token to use with InversifyJS injection.
  */
 export class Token<T> {
   /**
@@ -17,27 +17,32 @@ export class Token<T> {
 }
 
 /**
- * Foo.
+ * Extract the type of a token for use with injection.
  */
 export type TokenType<T extends Token<any>> = T["_witness"];
 
 /**
- * Foo.
+ * Get an item represented by a token from a container.
  */
 export const getToken = <T extends Token<any>>(container: interfaces.Container, token: T): TokenType<T> =>
-  container.get<T["_witness"]>(token.identifier);
+  container.get<TokenType<T>>(token.identifier);
 
 /**
- * Foo.
+ * Inject an item represented by a token.
  */
-export const injectToken =
-  <T extends Token<any>>(token: T): ((target: any, targetKey: string, index?: number | undefined) => void) =>
-    inject(token.identifier);
+export const injectToken = <T extends Token<any>>(token: T): ReturnType<typeof inject> =>
+  inject(token.identifier);
 
 /**
- * Foo.
+ * Inject multiple items represented by a token.
+ */
+export const multiInjectToken = <T extends Token<any>>(token: T): ReturnType<typeof multiInject> =>
+  multiInject(token.identifier);
+
+/**
+ * Wrap a bind function to allow binding tokens.
  */
 export const tokenBinder =
   (bind: interfaces.Bind) =>
-  <T extends Token<any>>(token: T): interfaces.BindingToSyntax<T["_witness"]> =>
-    bind<T["_witness"]>(token.identifier);
+  <T extends Token<any>>(token: T): interfaces.BindingToSyntax<TokenType<T>> =>
+    bind<TokenType<T>>(token.identifier);
