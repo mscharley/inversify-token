@@ -1,0 +1,15 @@
+src/**/*
+dist/**/*.spec.js
+dist/**/*.spec.d.ts
+.editorconfig
+.gitignore
+.nvmrc
+mocha.opts
+tslint.json
+tsconfig.json
+stryker.conf.js
+.nyc_output/
+coverage/
+reports/
+.circleci/
+*.tgz

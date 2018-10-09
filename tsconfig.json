@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["es6"],
+    "types": ["node", "reflect-metadata"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "strict": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "removeComments": false,
+    "inlineSourceMap": true,
+    "declaration": true,
+    "baseUrl": "./src",
+    "rootDirs": [ "./src" ],
+    "outDir": "./dist",
+  }
+}

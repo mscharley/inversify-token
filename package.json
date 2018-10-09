@@ -1,0 +1,33 @@
+{
+  "name": "inversify-token",
+  "version": "4.0.0",
+  "description": "Token-based injection for InversifyJS",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "rm -fr dist && tsc",
+    "prepack": "rm -fr dist && tsc",
+    "test": "tslint -p tsconfig.json -t verbose && npm run build && node dist/index.spec.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mscharley/inversify-token.git"
+  },
+  "author": "Matthew Scharley <matt@scharley.me>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mscharley/inversify-token/issues"
+  },
+  "homepage": "https://github.com/mscharley/inversify-token#readme",
+  "peerDependencies": {
+    "inversify": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "*",
+    "inversify": "^4.13.0",
+    "reflect-metadata": "^0.1.12",
+    "tslint": "^5.11.0",
+    "tslint-eslint-rules": "^5.4.0",
+    "typescript": "^3.1.1"
+  }
+}

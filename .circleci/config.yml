@@ -1,0 +1,38 @@
+version: 2
+
+commands:
+  build:
+    description: "A wrapper command for the build process."
+    steps:
+      - checkout
+      - run: npm install
+      - run: npm build
+      - run: npm test
+
+jobs:
+  boron:
+    working_directory: ~/inversify-token
+    docker:
+      - image: circleci/node:6
+    steps:
+      - build
+  carbon:
+    working_directory: ~/inversify-token
+    docker:
+      - image: circleci/node:8
+    steps:
+      - build
+  latest:
+    working_directory: ~/inversify-token
+    docker:
+      - image: circleci/node:10
+    steps:
+      - build
+
+workflows:
+  version: 2
+  ci:
+    jobs:
+      - carbon
+      - boron
+      - latest
