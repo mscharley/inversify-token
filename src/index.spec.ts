@@ -1,9 +1,7 @@
 import "reflect-metadata";
 
 import { Container, ContainerModule, injectable, interfaces } from "inversify";
-import { getToken, injectToken, multiInjectToken, Token, tokenBinder, TokenType } from "./";
-
-// tslint:disable:max-classes-per-file
+import { getToken, injectToken, multiInjectToken, Token, tokenBinder, TokenContainerModule, TokenType } from "./";
 
 export interface Warrior {
   fight(): string;
@@ -66,14 +64,18 @@ const testContainer = (c: interfaces.Container) => {
   }
 };
 
+// tslint:disable-next-line:no-console
+console.log("*** TESTING CONTAINER ***");
 const myContainer = new Container();
-const bindToken = tokenBinder(myContainer.bind.bind(myContainer) as typeof myContainer["bind"]);
-bindToken(TOKENS.ThrowableWeapon).to(Shuriken);
-bindToken(TOKENS.Warrior).to(Ninja);
-bindToken(TOKENS.Weapon).to(Katana);
-bindToken(TOKENS.Weapon).to(Katana);
+const containerBindToken = tokenBinder(myContainer.bind.bind(myContainer) as typeof myContainer["bind"]);
+containerBindToken(TOKENS.ThrowableWeapon).to(Shuriken);
+containerBindToken(TOKENS.Warrior).to(Ninja);
+containerBindToken(TOKENS.Weapon).to(Katana);
+containerBindToken(TOKENS.Weapon).to(Katana);
 testContainer(myContainer);
 
+// tslint:disable-next-line:no-console
+console.log("*** TESTING MODULE ***");
 const moduleContainer = new Container();
 const module = new ContainerModule((bind) => {
   // tslint:disable-next-line:no-shadowed-variable
@@ -85,6 +87,18 @@ const module = new ContainerModule((bind) => {
 });
 moduleContainer.load(module);
 testContainer(moduleContainer);
+
+// tslint:disable-next-line:no-console
+console.log("*** TESTING TOKEN MODULE ***");
+const tokenModuleContainer = new Container();
+const tokenModule = new TokenContainerModule((bindToken) => {
+  bindToken(TOKENS.ThrowableWeapon).to(Shuriken);
+  bindToken(TOKENS.Warrior).to(Ninja);
+  bindToken(TOKENS.Weapon).to(Katana);
+  bindToken(TOKENS.Weapon).to(Katana);
+});
+tokenModuleContainer.load(tokenModule);
+testContainer(tokenModuleContainer);
 
 // tslint:disable-next-line:no-console
 console.log("*** TESTS SUCCESSFUL ***");
