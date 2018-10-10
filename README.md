@@ -29,31 +29,28 @@ Modified from the [InversifyJS readme](inversify-readme).
 // Declare your interfaces as normal.
 
 // file types.ts
-import { Token } from "inversify-token";
-import { Warrior, Weapon, ThrowableWeapon } from "./interfaces.ts"
+import { Token, TokenType } from "inversify-token";
+import { Warrior, Weapon, ThrowableWeapon } from "./interfaces"
 
-const TYPES = {
-    Warrior: new Token<Warrior>(Symbol.for("Warrior")),
-    Weapon: new Token<Weapon>(Symbol.for("Weapon")),
-    ThrowableWeapon: new Token<ThrowableWeapon>(Symbol.for("ThrowableWeapon")),
-}
+const WarriorToken = new Token<Warrior>(Symbol.for("Warrior"));
+type WarriorToken = TokenType<typeof WarriorToken>;
+const WeaponToken = new Token<Weapon>(Symbol.for("Weapon"));
+type WeaponToken = TokenType<typeof WeaponToken>;
+const ThrowableWeaponToken = new Token<ThrowableWeapon>(Symbol.for("ThrowableWeapon"));
+type ThrowableWeaponToken = TokenType<typeof ThrowableWeaponToken>;
 
 // file entities.ts
-import { injectToken, TokenType } from "inversify-token";
+import { injectable } from "inversify";
+import { injectToken } from "inversify-token";
+import * as TYPES from "./types";
 
 @injectable()
 class Ninja implements Warrior {
 
-    private _katana: Weapon;
-    private _shuriken: ThrowableWeapon;
-
     public constructor(
-        @injectToken(TYPES.Weapon) katana: TokenType<typeof TYPES["Weapon"]>,
-        @injectToken(TYPES.ThrowableWeapon) shuriken: TokenType<typeof TYPES["ThrowableWeapon"]>,
-    ) {
-        this._katana = katana;
-        this._shuriken = shuriken;
-    }
+        @injectToken(TYPES.Weapon) private _katana: TYPES.Weapon,
+        @injectToken(TYPES.ThrowableWeapon) private _shuriken: TYPES.ThrowableWeapon,
+    ) { }
 
     public fight() { return this._katana.hit(); }
     public sneak() { return this._shuriken.throw(); }
@@ -61,14 +58,25 @@ class Ninja implements Warrior {
 }
 
 // file inversify.config.ts
-import { tokenBinder } from "inversify-token";
+import { getToken, tokenBinder } from "inversify-token";
 
 const myContainer = new Container();
 const bindToken = tokenBinder(myContainer.bind.bind(myContainer));
-// or bindToken = tokenBinder(bind) in a ModuleContainer.
 bindToken(TYPES.Warrior).to(Ninja);
 bindToken(TYPES.Weapon).to(Katana);
 bindToken(TYPES.ThrowableWeapon).to(Shuriken);
+const warrior = getToken(container, TYPES.Warrior);
+
+// file inversify.module.ts
+import { getToken, TokenContainerModule } from "inversify-token";
+
+const myContainer = new Container();
+const module = new TokenContainerModule((bindToken) => {
+    bindToken(TYPES.Warrior).to(Ninja);
+    bindToken(TYPES.Weapon).to(Katana);
+    bindToken(TYPES.ThrowableWeapon).to(Shuriken);
+});
+const warrior = getToken(container, TYPES.Warrior);
 ```
 
   [gh-contrib]: https://github.com/mscharley/inversify-token/graphs/contributors
