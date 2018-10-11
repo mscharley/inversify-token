@@ -78,7 +78,7 @@ export const tokenIsBound = (isBound: inversify.IsBound) => <T>(token: Token<T>)
  */
 export const tokenRebinder = (rebind: inversify.Rebind) => <T>(token: Token<T>) => rebind<T>(token.identifier);
 
-declare namespace interfaces {
+export declare namespace interfaces {
   type TokenBinder = ReturnType<typeof tokenBinder>;
   type TokenUnbinder = ReturnType<typeof tokenUnbinder>;
   type TokenIsBound = ReturnType<typeof tokenIsBound>;
