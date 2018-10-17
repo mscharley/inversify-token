@@ -76,6 +76,7 @@ const module = new TokenContainerModule((bindToken) => {
     bindToken(TYPES.Weapon).to(Katana);
     bindToken(TYPES.ThrowableWeapon).to(Shuriken);
 });
+myContainer.load(module);
 const warrior = getToken(container, TYPES.Warrior);
 ```
 
