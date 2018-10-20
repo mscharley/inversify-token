@@ -1,6 +1,6 @@
 {
   "name": "inversify-token",
-  "version": "4.0.2",
+  "version": "5.0.0",
   "description": "Token-based injection for InversifyJS",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -20,11 +20,11 @@
   },
   "homepage": "https://github.com/mscharley/inversify-token#readme",
   "peerDependencies": {
-    "inversify": "^4.0.0"
+    "inversify": "^5.0.0"
   },
   "devDependencies": {
     "@types/node": "*",
-    "inversify": "^4.13.0",
+    "inversify": "^5.0.0",
     "reflect-metadata": "^0.1.12",
     "tslint": "^5.11.0",
     "tslint-eslint-rules": "^5.4.0",
