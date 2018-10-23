@@ -39,6 +39,12 @@ type WeaponToken = TokenType<typeof WeaponToken>;
 const ThrowableWeaponToken = new Token<ThrowableWeapon>(Symbol.for("ThrowableWeapon"));
 type ThrowableWeaponToken = TokenType<typeof ThrowableWeaponToken>;
 
+export {
+    WarriorToken as Warrior,
+    WeaponToken as Weapon,
+    ThrowableWeaponToken as ThrowableWeapon,
+}
+
 // file entities.ts
 import { injectable } from "inversify";
 import { injectToken } from "inversify-token";
@@ -76,6 +82,7 @@ const module = new TokenContainerModule((bindToken) => {
     bindToken(TYPES.Weapon).to(Katana);
     bindToken(TYPES.ThrowableWeapon).to(Shuriken);
 });
+myContainer.load(module);
 const warrior = getToken(container, TYPES.Warrior);
 ```
 
