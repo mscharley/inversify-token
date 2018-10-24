@@ -21,8 +21,6 @@ This library provides simpler, more type-safe options for injecting values using
 
 ## Usage
 
-This library is a bit of an experiment. While functional, I'm still on the fence about whether it's a good idea.
-
 Modified from the [InversifyJS readme](inversify-readme).
 
 ```ts
