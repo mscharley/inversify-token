@@ -7,7 +7,19 @@
   "scripts": {
     "build": "rm -fr dist && tsc",
     "prepack": "rm -fr dist && tsc",
-    "test": "tslint -p tsconfig.json -t verbose && npm run build && node dist/index.spec.js"
+    "test": "tslint -p tsconfig.json -t verbose && npm run build && node dist/index.spec.js",
+    "commit": "git-cz"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-push": "npm test"
+    }
+  },
+  "config": {
+    "commitizen": {
+      "path": "@commitlint/prompt"
+    }
   },
   "repository": {
     "type": "git",
@@ -23,7 +35,12 @@
     "inversify": "^5.0.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^7.2.1",
+    "@commitlint/config-conventional": "^7.1.2",
+    "@commitlint/prompt": "^7.2.1",
     "@types/node": "*",
+    "commitizen": "^3.0.4",
+    "husky": "^1.1.2",
     "inversify": "^5.0.0",
     "reflect-metadata": "^0.1.12",
     "tslint": "^5.11.0",
