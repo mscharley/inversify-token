@@ -22,6 +22,14 @@ jobs:
       - checkout
       - run: npm install
       - run: npx commitlint --from origin/master --to HEAD
+  deploy:
+    working_directory: ~/inversify-token
+    docker:
+      - image: circleci/node:10
+    steps:
+      - checkout
+      - run: npm install
+      - run: npm run semantic-release
 
 workflows:
   version: 2
@@ -37,3 +45,12 @@ workflows:
       - build:
           name: latest
           node_version: "10"
+      - deploy:
+          requires:
+            - lint
+            - boron
+            - carbon
+            - latest
+          filters:
+            branches:
+              only: master
