@@ -1,38 +1,39 @@
 version: 2.1
 
-commands:
+jobs:
   build:
-    description: "A wrapper command for the build process."
+    parameters:
+      node_version:
+        description: "Node version to test."
+        type: string
+    working_directory: ~/inversify-token
+    docker:
+      - image: circleci/node:<< parameters.node_version >>
     steps:
       - checkout
       - run: npm install
       - run: npm build
       - run: npm test
-
-jobs:
-  boron:
-    working_directory: ~/inversify-token
-    docker:
-      - image: circleci/node:6
-    steps:
-      - build
-  carbon:
-    working_directory: ~/inversify-token
-    docker:
-      - image: circleci/node:8
-    steps:
-      - build
-  latest:
+  lint:
     working_directory: ~/inversify-token
     docker:
       - image: circleci/node:10
     steps:
-      - build
+      - checkout
+      - run: npm install
+      - run: npx commitlint --from origin/master --to HEAD
 
 workflows:
   version: 2
   ci:
     jobs:
-      - carbon
-      - boron
-      - latest
+      - lint
+      - build:
+          name: boron
+          node_version: "6"
+      - build:
+          name: carbon
+          node_version: "8"
+      - build:
+          name: latest
+          node_version: "10"
