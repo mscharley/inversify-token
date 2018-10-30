@@ -1,4 +1,4 @@
-import { ContainerModule, inject, interfaces as inversify, multiInject } from "inversify";
+import { AsyncContainerModule, ContainerModule, inject, interfaces as inversify, multiInject } from "inversify";
 
 /**
  * A token to use with InversifyJS injection.
@@ -90,6 +90,13 @@ export declare namespace interfaces {
     isBoundToken: TokenIsBound,
     rebindToken: TokenRebinder,
   ) => void;
+
+  type AsyncTokenContainerModuleCallback = (
+    bindToken: TokenBinder,
+    unbindToken: TokenUnbinder,
+    isBoundToken: TokenIsBound,
+    rebindToken: TokenRebinder,
+  ) => Promise<void>;
 }
 
 /**
@@ -104,6 +111,26 @@ export class TokenContainerModule extends ContainerModule {
   public constructor(registry: interfaces.TokenContainerModuleCallback) {
     super((bind, unbind, isBound, rebind) => {
       registry(
+        tokenBinder(bind),
+        tokenUnbinder(unbind),
+        tokenIsBound(isBound),
+        tokenRebinder(rebind),
+      );
+    });
+  }
+}
+
+/**
+ * An AsyncContainerModule that uses tokens exclusively.
+ *
+ * If you need to mix and match tokens and regular symbols in the same module then use
+ * AsyncContainerModule and manually wrap functions you need.
+ * @see tokenBinder
+ */
+export class AsyncTokenContainerModule extends AsyncContainerModule {
+  public constructor(registry: interfaces.AsyncTokenContainerModuleCallback) {
+    super(async (bind, unbind, isBound, rebind) => {
+      await registry(
         tokenBinder(bind),
         tokenUnbinder(unbind),
         tokenIsBound(isBound),

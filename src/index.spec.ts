@@ -1,7 +1,16 @@
 import "reflect-metadata";
 
 import { Container, ContainerModule, injectable, interfaces } from "inversify";
-import { getToken, injectToken, multiInjectToken, Token, tokenBinder, TokenContainerModule, TokenType } from "./";
+import {
+  AsyncTokenContainerModule,
+  getToken,
+  injectToken,
+  multiInjectToken,
+  Token,
+  tokenBinder,
+  TokenContainerModule,
+  TokenType,
+} from "./";
 
 export interface Warrior {
   fight(): string;
@@ -64,41 +73,63 @@ const testContainer = (c: interfaces.Container) => {
   }
 };
 
-// tslint:disable-next-line:no-console
-console.log("*** TESTING CONTAINER ***");
-const myContainer = new Container();
-const containerBindToken = tokenBinder(myContainer.bind.bind(myContainer) as typeof myContainer["bind"]);
-containerBindToken(TOKENS.ThrowableWeapon).to(Shuriken);
-containerBindToken(TOKENS.Warrior).to(Ninja);
-containerBindToken(TOKENS.Weapon).to(Katana);
-containerBindToken(TOKENS.Weapon).to(Katana);
-testContainer(myContainer);
+const runTests = async () => {
+  // tslint:disable-next-line:no-console
+  console.log("*** TESTING CONTAINER ***");
+  const myContainer = new Container();
+  const containerBindToken = tokenBinder(myContainer.bind.bind(myContainer) as typeof myContainer["bind"]);
+  containerBindToken(TOKENS.ThrowableWeapon).to(Shuriken);
+  containerBindToken(TOKENS.Warrior).to(Ninja);
+  containerBindToken(TOKENS.Weapon).to(Katana);
+  containerBindToken(TOKENS.Weapon).to(Katana);
+  testContainer(myContainer);
 
-// tslint:disable-next-line:no-console
-console.log("*** TESTING MODULE ***");
-const moduleContainer = new Container();
-const module = new ContainerModule((bind) => {
-  // tslint:disable-next-line:no-shadowed-variable
-  const bindToken = tokenBinder(bind);
-  bindToken(TOKENS.ThrowableWeapon).to(Shuriken);
-  bindToken(TOKENS.Warrior).to(Ninja);
-  bindToken(TOKENS.Weapon).to(Katana);
-  bindToken(TOKENS.Weapon).to(Katana);
+  // tslint:disable-next-line:no-console
+  console.log("*** TESTING MODULE ***");
+  const moduleContainer = new Container();
+  const module = new ContainerModule((bind) => {
+    // tslint:disable-next-line:no-shadowed-variable
+    const bindToken = tokenBinder(bind);
+    bindToken(TOKENS.ThrowableWeapon).to(Shuriken);
+    bindToken(TOKENS.Warrior).to(Ninja);
+    bindToken(TOKENS.Weapon).to(Katana);
+    bindToken(TOKENS.Weapon).to(Katana);
+  });
+  moduleContainer.load(module);
+  testContainer(moduleContainer);
+
+  // tslint:disable-next-line:no-console
+  console.log("*** TESTING TOKEN MODULE ***");
+  const tokenModuleContainer = new Container();
+  const tokenModule = new TokenContainerModule((bindToken) => {
+    bindToken(TOKENS.ThrowableWeapon).to(Shuriken);
+    bindToken(TOKENS.Warrior).to(Ninja);
+    bindToken(TOKENS.Weapon).to(Katana);
+    bindToken(TOKENS.Weapon).to(Katana);
+  });
+  tokenModuleContainer.load(tokenModule);
+  testContainer(tokenModuleContainer);
+
+  // tslint:disable-next-line:no-console
+  console.log("*** TESTING ASYNC TOKEN MODULE ***");
+  const asyncTokenModuleContainer = new Container();
+  const asyncTokenModule = new AsyncTokenContainerModule(async (bindToken) => {
+    await new Promise((resolve) => setTimeout(resolve, 200));
+
+    bindToken(TOKENS.ThrowableWeapon).to(Shuriken);
+    bindToken(TOKENS.Warrior).to(Ninja);
+    bindToken(TOKENS.Weapon).to(Katana);
+    bindToken(TOKENS.Weapon).to(Katana);
+  });
+  await asyncTokenModuleContainer.loadAsync(asyncTokenModule);
+  testContainer(asyncTokenModuleContainer);
+};
+
+runTests().then(() => {
+  // tslint:disable-next-line:no-console
+  console.log("*** TESTS SUCCESSFUL ***");
+}).catch((e) => {
+  // tslint:disable-next-line:no-console
+  console.error(e);
+  process.exit(1);
 });
-moduleContainer.load(module);
-testContainer(moduleContainer);
-
-// tslint:disable-next-line:no-console
-console.log("*** TESTING TOKEN MODULE ***");
-const tokenModuleContainer = new Container();
-const tokenModule = new TokenContainerModule((bindToken) => {
-  bindToken(TOKENS.ThrowableWeapon).to(Shuriken);
-  bindToken(TOKENS.Warrior).to(Ninja);
-  bindToken(TOKENS.Weapon).to(Katana);
-  bindToken(TOKENS.Weapon).to(Katana);
-});
-tokenModuleContainer.load(tokenModule);
-testContainer(tokenModuleContainer);
-
-// tslint:disable-next-line:no-console
-console.log("*** TESTS SUCCESSFUL ***");
