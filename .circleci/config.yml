@@ -12,7 +12,6 @@ jobs:
     steps:
       - checkout
       - run: npm install
-      - run: npm build
       - run: npm test
   lint:
     working_directory: ~/inversify-token
