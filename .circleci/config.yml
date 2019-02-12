@@ -42,13 +42,17 @@ workflows:
           name: carbon
           node_version: "8"
       - build:
-          name: latest
+          name: dubnium
           node_version: "10"
+      - build:
+          name: latest
+          node_version: "11"
       - deploy:
           requires:
             - lint
             - boron
             - carbon
+            - dubnium
             - latest
           filters:
             branches:
