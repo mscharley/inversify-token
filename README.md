@@ -1,7 +1,7 @@
 # inversify-token
 
 [![npm](https://img.shields.io/npm/v/inversify-token.svg)](https://www.npmjs.com/package/inversify-token)
-[![CircleCI](https://img.shields.io/circleci/project/github/mscharley/inversify-token.svg)](https://circleci.com/gh/mscharley/inversify-token) [![Greenkeeper badge](https://badges.greenkeeper.io/mscharley/inversify-token.svg)](https://greenkeeper.io/)
+[![CircleCI](https://img.shields.io/circleci/project/github/mscharley/inversify-token.svg)](https://circleci.com/gh/mscharley/inversify-token)
 
 **Source:** [https://github.com/mscharley/inversify-token](https://github.com/mscharley/inversify-token)  
 **Author:** Matthew Scharley  
