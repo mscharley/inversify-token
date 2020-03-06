@@ -45,14 +45,18 @@ workflows:
           name: dubnium
           node_version: "10"
       - build:
+          name: erbium
+          node_version: "12"
+      - build:
           name: latest
-          node_version: "11"
+          node_version: "13"
       - deploy:
           requires:
             - lint
             - boron
             - carbon
             - dubnium
+            - erbium
             - latest
           filters:
             branches:
