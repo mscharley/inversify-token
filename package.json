@@ -36,17 +36,17 @@
     "inversify": "^5.0.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "^7.5.1",
-    "@commitlint/config-conventional": "^7.5.0",
-    "@commitlint/prompt": "^7.5.0",
+    "@commitlint/cli": "7.5.1",
+    "@commitlint/config-conventional": "7.5.0",
+    "@commitlint/prompt": "7.5.0",
     "@types/node": "*",
-    "commitizen": "^3.0.4",
-    "husky": "^2.2.0",
-    "inversify": "^5.0.0",
-    "reflect-metadata": "^0.1.12",
-    "semantic-release": "^15.10.5",
-    "tslint": "^5.11.0",
-    "tslint-eslint-rules": "^5.4.0",
-    "typescript": "~3.3.0"
+    "commitizen": "3.0.4",
+    "husky": "2.2.0",
+    "inversify": "5.0.1",
+    "reflect-metadata": "0.1.12",
+    "semantic-release": "15.10.5",
+    "tslint": "5.11.0",
+    "tslint-eslint-rules": "5.4.0",
+    "typescript": "3.3.3"
   }
 }
