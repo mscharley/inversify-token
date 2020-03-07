@@ -47,6 +47,6 @@
     "semantic-release": "17.0.4",
     "tslint": "5.20.1",
     "tslint-eslint-rules": "5.4.0",
-    "typescript": "3.3.3"
+    "typescript": "3.8.3"
   }
 }
