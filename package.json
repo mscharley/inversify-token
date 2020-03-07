@@ -44,7 +44,7 @@
     "husky": "4.2.3",
     "inversify": "5.0.1",
     "reflect-metadata": "0.1.13",
-    "semantic-release": "15.10.5",
+    "semantic-release": "17.0.4",
     "tslint": "5.20.1",
     "tslint-eslint-rules": "5.4.0",
     "typescript": "3.3.3"
