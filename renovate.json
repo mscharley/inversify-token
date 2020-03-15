@@ -11,10 +11,6 @@
     {
       "depTypeList": ["devDependencies"],
       "automerge": true
-    },
-    {
-      "packageNames": ["@types/node"],
-      "allowedVersions": "^12.0.0"
     }
   ]
 }
