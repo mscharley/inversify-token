@@ -1,16 +1,14 @@
 {
   "extends": [
-    "config:base"
+    "config:js-lib",
+    ":automergeMinor",
+    ":semanticCommits"
   ],
-  "schedule": "every weekend",
   "packageRules": [
     {
-      "updateTypes": ["minor", "patch", "pin", "digest"],
-      "automerge": true
-    },
-    {
-      "depTypeList": ["devDependencies"],
-      "automerge": true
+      "packageNames": ["@types/node"],
+      "allowedVersions": "^12.0.0",
+      "major": { "enabled": true }
     }
   ]
 }
