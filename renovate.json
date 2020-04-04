@@ -3,7 +3,8 @@
     "config:js-lib",
     "schedule:weekends",
     ":automergeMinor",
-    ":semanticCommits"
+    ":semanticCommits",
+    ":rebaseStalePrs"
   ],
   "packageRules": [
     {
