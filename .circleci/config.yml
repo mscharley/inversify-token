@@ -36,9 +36,6 @@ workflows:
     jobs:
       - lint
       - build:
-          name: boron
-          node_version: "6"
-      - build:
           name: carbon
           node_version: "8"
       - build:
@@ -53,7 +50,6 @@ workflows:
       - deploy:
           requires:
             - lint
-            - boron
             - carbon
             - dubnium
             - erbium
