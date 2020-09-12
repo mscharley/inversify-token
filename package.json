@@ -41,7 +41,7 @@
     "@commitlint/prompt": "9.1.2",
     "@types/node": "12.12.58",
     "commitizen": "4.2.1",
-    "husky": "4.2.5",
+    "husky": "4.3.0",
     "inversify": "5.0.1",
     "reflect-metadata": "0.1.13",
     "semantic-release": "17.1.1",
