@@ -39,7 +39,7 @@
     "@commitlint/cli": "9.1.2",
     "@commitlint/config-conventional": "9.1.2",
     "@commitlint/prompt": "9.1.2",
-    "@types/node": "12.19.12",
+    "@types/node": "12.19.14",
     "commitizen": "4.2.2",
     "husky": "4.3.7",
     "inversify": "5.0.5",
