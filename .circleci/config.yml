@@ -36,9 +36,6 @@ workflows:
     jobs:
       - lint
       - build:
-          name: carbon
-          node_version: "8"
-      - build:
           name: dubnium
           node_version: "10"
       - build:
@@ -56,7 +53,6 @@ workflows:
       - deploy:
           requires:
             - lint
-            - carbon
             - dubnium
             - erbium
             - gallium
