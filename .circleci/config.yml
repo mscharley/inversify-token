@@ -16,7 +16,7 @@ jobs:
   lint:
     working_directory: ~/inversify-token
     docker:
-      - image: circleci/node:14
+      - image: circleci/node:16
     steps:
       - checkout
       - run: npm install
@@ -24,7 +24,7 @@ jobs:
   deploy:
     working_directory: ~/inversify-token
     docker:
-      - image: circleci/node:14
+      - image: circleci/node:16
     steps:
       - checkout
       - run: npm install
@@ -48,6 +48,9 @@ workflows:
           name: fermium
           node_version: "14"
       - build:
+          name: gallium
+          node_version: "16"
+      - build:
           name: latest
           node_version: "latest"
       - deploy:
@@ -56,6 +59,7 @@ workflows:
             - carbon
             - dubnium
             - erbium
+            - gallium
             - latest
           filters:
             branches:
