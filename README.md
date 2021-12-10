@@ -7,7 +7,7 @@
 **Author:** Matthew Scharley  
 **Contributors:** [See contributors on GitHub][gh-contrib]  
 **Bugs/Support:** [Github Issues][gh-issues]  
-**Copyright:** 2018  
+**Copyright:** 2021  
 **License:** [MIT license][license]  
 **Status:** Active
 
