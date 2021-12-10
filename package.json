@@ -33,7 +33,7 @@
   },
   "homepage": "https://github.com/mscharley/inversify-token#readme",
   "peerDependencies": {
-    "inversify": "^5.0.0 || ^6.0.0"
+    "inversify": "^6.0.0"
   },
   "devDependencies": {
     "@commitlint/cli": "15.0.0",
