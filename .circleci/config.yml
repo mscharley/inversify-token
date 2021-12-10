@@ -20,7 +20,7 @@ jobs:
     steps:
       - checkout
       - run: npm install
-      - run: npx commitlint --from origin/master --to HEAD
+      - run: npx commitlint --from origin/main --to HEAD
   deploy:
     working_directory: ~/inversify-token
     docker:
@@ -59,4 +59,4 @@ workflows:
             - latest
           filters:
             branches:
-              only: master
+              only: main

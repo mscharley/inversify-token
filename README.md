@@ -28,20 +28,22 @@ Modified from the [InversifyJS readme](inversify-readme).
 
 // file types.ts
 import { Token, TokenType } from "inversify-token";
-import { Warrior, Weapon, ThrowableWeapon } from "./interfaces"
+import { Warrior, Weapon, ThrowableWeapon } from "./interfaces";
 
 const WarriorToken = new Token<Warrior>(Symbol.for("Warrior"));
 type WarriorToken = TokenType<typeof WarriorToken>;
 const WeaponToken = new Token<Weapon>(Symbol.for("Weapon"));
 type WeaponToken = TokenType<typeof WeaponToken>;
-const ThrowableWeaponToken = new Token<ThrowableWeapon>(Symbol.for("ThrowableWeapon"));
+const ThrowableWeaponToken = new Token<ThrowableWeapon>(
+  Symbol.for("ThrowableWeapon")
+);
 type ThrowableWeaponToken = TokenType<typeof ThrowableWeaponToken>;
 
 export {
-    WarriorToken as Warrior,
-    WeaponToken as Weapon,
-    ThrowableWeaponToken as ThrowableWeapon,
-}
+  WarriorToken as Warrior,
+  WeaponToken as Weapon,
+  ThrowableWeaponToken as ThrowableWeapon,
+};
 
 // file entities.ts
 import { injectable } from "inversify";
@@ -50,15 +52,17 @@ import * as TYPES from "./types";
 
 @injectable()
 class Ninja implements Warrior {
+  public constructor(
+    @injectToken(TYPES.Weapon) private _katana: TYPES.Weapon,
+    @injectToken(TYPES.ThrowableWeapon) private _shuriken: TYPES.ThrowableWeapon
+  ) {}
 
-    public constructor(
-        @injectToken(TYPES.Weapon) private _katana: TYPES.Weapon,
-        @injectToken(TYPES.ThrowableWeapon) private _shuriken: TYPES.ThrowableWeapon,
-    ) { }
-
-    public fight() { return this._katana.hit(); }
-    public sneak() { return this._shuriken.throw(); }
-
+  public fight() {
+    return this._katana.hit();
+  }
+  public sneak() {
+    return this._shuriken.throw();
+  }
 }
 
 // file inversify.config.ts
@@ -76,15 +80,15 @@ import { getToken, TokenContainerModule } from "inversify-token";
 
 const myContainer = new Container();
 const module = new TokenContainerModule((bindToken) => {
-    bindToken(TYPES.Warrior).to(Ninja);
-    bindToken(TYPES.Weapon).to(Katana);
-    bindToken(TYPES.ThrowableWeapon).to(Shuriken);
+  bindToken(TYPES.Warrior).to(Ninja);
+  bindToken(TYPES.Weapon).to(Katana);
+  bindToken(TYPES.ThrowableWeapon).to(Shuriken);
 });
 myContainer.load(module);
 const warrior = getToken(container, TYPES.Warrior);
 ```
 
-  [gh-contrib]: https://github.com/mscharley/inversify-token/graphs/contributors
-  [gh-issues]: https://github.com/mscharley/inversify-token/issues
-  [license]: https://github.com/mscharley/inversify-token/blob/master/LICENSE
-  [inversify-readme]: https://github.com/inversify/InversifyJS#the-basics
+[gh-contrib]: https://github.com/mscharley/inversify-token/graphs/contributors
+[gh-issues]: https://github.com/mscharley/inversify-token/issues
+[license]: https://github.com/mscharley/inversify-token/blob/main/LICENSE
+[inversify-readme]: https://github.com/inversify/InversifyJS#the-basics
