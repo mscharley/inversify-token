@@ -67,6 +67,7 @@ workflows:
             - lint
             - dubnium
             - erbium
+            - fermium
             - gallium
             - latest
           filters:
