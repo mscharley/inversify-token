@@ -1,4 +1,6 @@
 version: 2.1
+orbs:
+  node: circleci/node@4
 
 jobs:
   build:
@@ -6,25 +8,35 @@ jobs:
       node_version:
         description: "Node version to test."
         type: string
-    working_directory: ~/inversify-token
-    docker:
-      - image: circleci/node:<< parameters.node_version >>
+      update_npm:
+        description: "Whether to update npm to at least npm 7.x"
+        default: false
+        type: boolean
+    executor:
+      name: node/default
+      tag: << parameters.node_version >>
     steps:
       - checkout
+      - when:
+          condition:
+            equal: [true, << parameters.update_npm >>]
+          steps:
+            - node/install-npm:
+                version: "7"
       - run: npm install
       - run: npm test
   lint:
-    working_directory: ~/inversify-token
-    docker:
-      - image: circleci/node:16
+    executor:
+      name: node/default
+      tag: "16.13"
     steps:
       - checkout
       - run: npm install
       - run: npx commitlint --from origin/main --to HEAD
   deploy:
-    working_directory: ~/inversify-token
-    docker:
-      - image: circleci/node:16
+    executor:
+      name: node/default
+      tag: "16.13"
     steps:
       - checkout
       - run: npm install
@@ -37,26 +49,26 @@ workflows:
       - lint
       - build:
           name: dubnium
-          node_version: "10"
+          node_version: "10.24"
+          update_npm: true
       - build:
           name: erbium
-          node_version: "12"
+          node_version: "12.22"
+          update_npm: true
       - build:
           name: fermium
-          node_version: "14"
+          node_version: "14.18"
+          update_npm: true
       - build:
           name: gallium
-          node_version: "16"
-      - build:
-          name: latest
-          node_version: "latest"
+          node_version: "16.13"
       - deploy:
           requires:
             - lint
             - dubnium
             - erbium
+            - fermium
             - gallium
-            - latest
           filters:
             branches:
               only: main

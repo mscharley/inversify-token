@@ -1,6 +1,5 @@
-import "reflect-metadata";
+import 'reflect-metadata';
 
-import { Container, ContainerModule, injectable, interfaces } from "inversify";
 import {
   AsyncTokenContainerModule,
   getToken,
@@ -10,85 +9,88 @@ import {
   tokenBinder,
   TokenContainerModule,
   TokenType,
-} from "./";
+} from './';
+import { Container, ContainerModule, injectable } from 'inversify';
+import type { interfaces } from 'inversify';
 
 export interface Warrior {
-  fight(): string;
-  sneak(): string;
+  fight: () => string;
+  sneak: () => string;
 }
 
 export interface Weapon {
-  hit(): string;
+  hit: () => string;
 }
 
 export interface ThrowableWeapon {
-  throw(): string;
+  throw: () => string;
 }
 
 const TOKENS = {
-  ThrowableWeapon: new Token<ThrowableWeapon>(Symbol.for("ThrowableWeapon")),
-  Warrior: new Token<Warrior>(Symbol.for("Warrior")),
-  Weapon: new Token<Weapon>(Symbol.for("Weapon")),
+  ThrowableWeapon: new Token<ThrowableWeapon>(Symbol.for('ThrowableWeapon')),
+  Warrior: new Token<Warrior>(Symbol.for('Warrior')),
+  Weapon: new Token<Weapon>(Symbol.for('Weapon')),
 };
 
 @injectable()
 class Katana implements Weapon {
-  public hit() {
-    return "cut!";
+  public hit(): string {
+    return 'cut!';
   }
 }
 
 @injectable()
 class Shuriken implements ThrowableWeapon {
-  public throw() {
-    return "hit!";
+  public throw(): string {
+    return 'hit!';
   }
 }
 
 @injectable()
 class Ninja implements Warrior {
-
   public constructor(
-    @multiInjectToken(TOKENS.Weapon) private _katanas: Array<TokenType<typeof TOKENS["Weapon"]>>,
-    @injectToken(TOKENS.ThrowableWeapon) private _shuriken: TokenType<typeof TOKENS["ThrowableWeapon"]>,
+    @multiInjectToken(TOKENS.Weapon)
+    private readonly _katanas: Array<TokenType<typeof TOKENS['Weapon']>>,
+    @injectToken(TOKENS.ThrowableWeapon)
+    private readonly _shuriken: TokenType<typeof TOKENS['ThrowableWeapon']>,
   ) {}
 
-  public fight() {
-    return this._katanas.map((k) => k.hit()).join(" ");
+  public fight(): string {
+    return this._katanas.map((k) => k.hit()).join(' ');
   }
 
-  public sneak() {
+  public sneak(): string {
     return this._shuriken.throw();
   }
 }
 
-const testContainer = (c: interfaces.Container) => {
+const testContainer = (c: interfaces.Container): void => {
   const ninja = getToken(c, TOKENS.Warrior);
 
-  if (ninja.fight() !== "cut! cut!") {
-    throw new Error("Unexpected value for ninja fighting!");
+  if (ninja.fight() !== 'cut! cut!') {
+    throw new Error('Unexpected value for ninja fighting!');
   }
-  if (ninja.sneak() !== "hit!") {
-    throw new Error("Unexpected value for ninja sneaking!");
+  if (ninja.sneak() !== 'hit!') {
+    throw new Error('Unexpected value for ninja sneaking!');
   }
 };
 
-const runTests = async () => {
-  // tslint:disable-next-line:no-console
-  console.log("*** TESTING CONTAINER ***");
+/* eslint-disable no-console */
+const runTests = async (): Promise<void> => {
+  console.log('*** TESTING CONTAINER ***');
   const myContainer = new Container();
-  const containerBindToken = tokenBinder(myContainer.bind.bind(myContainer) as typeof myContainer["bind"]);
+  const containerBindToken = tokenBinder(
+    myContainer.bind.bind(myContainer) as typeof myContainer['bind'],
+  );
   containerBindToken(TOKENS.ThrowableWeapon).to(Shuriken);
   containerBindToken(TOKENS.Warrior).to(Ninja);
   containerBindToken(TOKENS.Weapon).to(Katana);
   containerBindToken(TOKENS.Weapon).to(Katana);
   testContainer(myContainer);
 
-  // tslint:disable-next-line:no-console
-  console.log("*** TESTING MODULE ***");
+  console.log('*** TESTING MODULE ***');
   const moduleContainer = new Container();
   const module = new ContainerModule((bind) => {
-    // tslint:disable-next-line:no-shadowed-variable
     const bindToken = tokenBinder(bind);
     bindToken(TOKENS.ThrowableWeapon).to(Shuriken);
     bindToken(TOKENS.Warrior).to(Ninja);
@@ -98,8 +100,7 @@ const runTests = async () => {
   moduleContainer.load(module);
   testContainer(moduleContainer);
 
-  // tslint:disable-next-line:no-console
-  console.log("*** TESTING TOKEN MODULE ***");
+  console.log('*** TESTING TOKEN MODULE ***');
   const tokenModuleContainer = new Container();
   const tokenModule = new TokenContainerModule((bindToken) => {
     bindToken(TOKENS.ThrowableWeapon).to(Shuriken);
@@ -110,8 +111,7 @@ const runTests = async () => {
   tokenModuleContainer.load(tokenModule);
   testContainer(tokenModuleContainer);
 
-  // tslint:disable-next-line:no-console
-  console.log("*** TESTING ASYNC TOKEN MODULE ***");
+  console.log('*** TESTING ASYNC TOKEN MODULE ***');
   const asyncTokenModuleContainer = new Container();
   const asyncTokenModule = new AsyncTokenContainerModule(async (bindToken) => {
     await new Promise((resolve) => setTimeout(resolve, 200));
@@ -125,11 +125,12 @@ const runTests = async () => {
   testContainer(asyncTokenModuleContainer);
 };
 
-runTests().then(() => {
-  // tslint:disable-next-line:no-console
-  console.log("*** TESTS SUCCESSFUL ***");
-}).catch((e) => {
-  // tslint:disable-next-line:no-console
-  console.error(e);
-  process.exit(1);
-});
+runTests()
+  .then(() => {
+    console.log('*** TESTS SUCCESSFUL ***');
+  })
+  .catch((e) => {
+    console.error(e);
+    // eslint-disable-next-line no-process-exit
+    process.exit(1);
+  });
