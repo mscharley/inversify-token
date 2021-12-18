@@ -4,6 +4,9 @@
   "description": "Token-based injection for InversifyJS",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "engines": {
+    "npm": ">= 7"
+  },
   "scripts": {
     "build": "rm -fr dist && tsc",
     "prepack": "rm -fr dist && tsc",
