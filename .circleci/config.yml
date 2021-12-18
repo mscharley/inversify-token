@@ -1,4 +1,6 @@
 version: 2.1
+orbs:
+  node: circleci/node@4
 
 jobs:
   build:
@@ -10,30 +12,31 @@ jobs:
         description: "Whether to update npm to at least npm 7.x"
         default: false
         type: boolean
-    working_directory: ~/inversify-token
-    docker:
-      - image: circleci/node:<< parameters.node_version >>
+    executor:
+      name: node/default
+      tag: << parameters.node_version >>
     steps:
       - checkout
       - when:
           condition:
             equal: [true, << parameters.update_npm >>]
           steps:
-            - run: npm install -g npm@7
+            - node/install-npm:
+                version: "7"
       - run: npm install
       - run: npm test
   lint:
-    working_directory: ~/inversify-token
-    docker:
-      - image: circleci/node:16
+    executor:
+      name: node/default
+      tag: "16"
     steps:
       - checkout
       - run: npm install
       - run: npx commitlint --from origin/main --to HEAD
   deploy:
-    working_directory: ~/inversify-token
-    docker:
-      - image: circleci/node:16
+    executor:
+      name: node/default
+      tag: "16"
     steps:
       - checkout
       - run: npm install
