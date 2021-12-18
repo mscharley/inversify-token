@@ -28,7 +28,7 @@ jobs:
   lint:
     executor:
       name: node/default
-      tag: "16"
+      tag: "16.13"
     steps:
       - checkout
       - run: npm install
@@ -36,7 +36,7 @@ jobs:
   deploy:
     executor:
       name: node/default
-      tag: "16"
+      tag: "16.13"
     steps:
       - checkout
       - run: npm install
@@ -49,19 +49,19 @@ workflows:
       - lint
       - build:
           name: dubnium
-          node_version: "10"
+          node_version: "10.24"
           update_npm: true
       - build:
           name: erbium
-          node_version: "12"
+          node_version: "12.22"
           update_npm: true
       - build:
           name: fermium
-          node_version: "14"
+          node_version: "14.18"
           update_npm: true
       - build:
           name: gallium
-          node_version: "16"
+          node_version: "16.13"
       - build:
           name: latest
           node_version: "latest"
