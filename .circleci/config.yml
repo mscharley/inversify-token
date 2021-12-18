@@ -62,9 +62,6 @@ workflows:
       - build:
           name: gallium
           node_version: "16.13"
-      - build:
-          name: latest
-          node_version: "latest"
       - deploy:
           requires:
             - lint
@@ -72,7 +69,6 @@ workflows:
             - erbium
             - fermium
             - gallium
-            - latest
           filters:
             branches:
               only: main
