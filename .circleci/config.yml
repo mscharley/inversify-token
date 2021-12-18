@@ -6,11 +6,20 @@ jobs:
       node_version:
         description: "Node version to test."
         type: string
+      update_npm:
+        description: "Whether to update npm to at least npm 7.x"
+        default: false
+        type: boolean
     working_directory: ~/inversify-token
     docker:
       - image: circleci/node:<< parameters.node_version >>
     steps:
       - checkout
+      - when:
+          condition:
+            equal: [true, << parameters.update_npm >>]
+          steps:
+            - run: npm install -g npm@7
       - run: npm install
       - run: npm test
   lint:
@@ -38,12 +47,15 @@ workflows:
       - build:
           name: dubnium
           node_version: "10"
+          update_npm: true
       - build:
           name: erbium
           node_version: "12"
+          update_npm: true
       - build:
           name: fermium
           node_version: "14"
+          update_npm: true
       - build:
           name: gallium
           node_version: "16"
