@@ -1,7 +1,5 @@
 import 'reflect-metadata';
 
-import type { interfaces } from 'inversify';
-import { Container, ContainerModule, injectable } from 'inversify';
 import {
   AsyncTokenContainerModule,
   getToken,
@@ -12,6 +10,8 @@ import {
   TokenContainerModule,
   TokenType,
 } from './';
+import { Container, ContainerModule, injectable } from 'inversify';
+import type { interfaces } from 'inversify';
 
 export interface Warrior {
   fight: () => string;
@@ -34,14 +34,14 @@ const TOKENS = {
 
 @injectable()
 class Katana implements Weapon {
-  public hit() {
+  public hit(): string {
     return 'cut!';
   }
 }
 
 @injectable()
 class Shuriken implements ThrowableWeapon {
-  public throw() {
+  public throw(): string {
     return 'hit!';
   }
 }
@@ -55,16 +55,16 @@ class Ninja implements Warrior {
     private readonly _shuriken: TokenType<typeof TOKENS['ThrowableWeapon']>,
   ) {}
 
-  public fight() {
+  public fight(): string {
     return this._katanas.map((k) => k.hit()).join(' ');
   }
 
-  public sneak() {
+  public sneak(): string {
     return this._shuriken.throw();
   }
 }
 
-const testContainer = (c: interfaces.Container) => {
+const testContainer = (c: interfaces.Container): void => {
   const ninja = getToken(c, TOKENS.Warrior);
 
   if (ninja.fight() !== 'cut! cut!') {
@@ -75,8 +75,8 @@ const testContainer = (c: interfaces.Container) => {
   }
 };
 
-const runTests = async () => {
-  // tslint:disable-next-line:no-console
+/* eslint-disable no-console */
+const runTests = async (): Promise<void> => {
   console.log('*** TESTING CONTAINER ***');
   const myContainer = new Container();
   const containerBindToken = tokenBinder(
@@ -88,11 +88,9 @@ const runTests = async () => {
   containerBindToken(TOKENS.Weapon).to(Katana);
   testContainer(myContainer);
 
-  // tslint:disable-next-line:no-console
   console.log('*** TESTING MODULE ***');
   const moduleContainer = new Container();
   const module = new ContainerModule((bind) => {
-    // tslint:disable-next-line:no-shadowed-variable
     const bindToken = tokenBinder(bind);
     bindToken(TOKENS.ThrowableWeapon).to(Shuriken);
     bindToken(TOKENS.Warrior).to(Ninja);
@@ -102,7 +100,6 @@ const runTests = async () => {
   moduleContainer.load(module);
   testContainer(moduleContainer);
 
-  // tslint:disable-next-line:no-console
   console.log('*** TESTING TOKEN MODULE ***');
   const tokenModuleContainer = new Container();
   const tokenModule = new TokenContainerModule((bindToken) => {
@@ -114,7 +111,6 @@ const runTests = async () => {
   tokenModuleContainer.load(tokenModule);
   testContainer(tokenModuleContainer);
 
-  // tslint:disable-next-line:no-console
   console.log('*** TESTING ASYNC TOKEN MODULE ***');
   const asyncTokenModuleContainer = new Container();
   const asyncTokenModule = new AsyncTokenContainerModule(async (bindToken) => {
@@ -131,11 +127,10 @@ const runTests = async () => {
 
 runTests()
   .then(() => {
-    // tslint:disable-next-line:no-console
     console.log('*** TESTS SUCCESSFUL ***');
   })
   .catch((e) => {
-    // tslint:disable-next-line:no-console
     console.error(e);
+    // eslint-disable-next-line no-process-exit
     process.exit(1);
   });

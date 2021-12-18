@@ -1,10 +1,10 @@
-import type { interfaces as inversify } from 'inversify';
 import {
   AsyncContainerModule,
   ContainerModule,
   inject,
   multiInject,
 } from 'inversify';
+import type { interfaces as inversify } from 'inversify';
 
 /**
  * A token to use with InversifyJS injection.
@@ -17,13 +17,14 @@ export class Token<T> {
    */
   public _witness!: T;
 
-  constructor(public readonly identifier: string | symbol) {}
+  public constructor(public readonly identifier: string | symbol) {}
 }
 
 /**
  * Extract the type of a token for use with injection.
  */
-export type TokenType<T extends Token<any>> = T['_witness'];
+// eslint-disable-next-line @typescript-eslint/no-type-alias
+export type TokenType<T extends Token<unknown>> = T['_witness'];
 
 /**
  * Get an item represented by a token from a container.
@@ -57,20 +58,20 @@ export const getTagged = <T>(
   container: inversify.Container,
   token: Token<T>,
   key: string | number | symbol,
-  value: any,
+  value: unknown,
 ): T => container.getTagged<T>(token.identifier, key, value);
 
 /**
  * Inject an item represented by a token.
  */
-export const injectToken = <T extends Token<any>>(
+export const injectToken = <T extends Token<unknown>>(
   token: T,
 ): ReturnType<typeof inject> => inject(token.identifier);
 
 /**
  * Inject multiple items represented by a token.
  */
-export const multiInjectToken = <T extends Token<any>>(
+export const multiInjectToken = <T extends Token<unknown>>(
   token: T,
 ): ReturnType<typeof multiInject> => multiInject(token.identifier);
 
@@ -79,7 +80,7 @@ export const multiInjectToken = <T extends Token<any>>(
  */
 export const tokenBinder =
   (bind: inversify.Bind) =>
-  <T>(token: Token<T>) =>
+  <T>(token: Token<T>): inversify.BindingToSyntax<T> =>
     bind<T>(token.identifier);
 
 /**
@@ -87,7 +88,7 @@ export const tokenBinder =
  */
 export const tokenUnbinder =
   (unbind: inversify.Unbind) =>
-  <T>(token: Token<T>) =>
+  <T>(token: Token<T>): void =>
     unbind<T>(token.identifier);
 
 /**
@@ -95,7 +96,7 @@ export const tokenUnbinder =
  */
 export const tokenIsBound =
   (isBound: inversify.IsBound) =>
-  <T>(token: Token<T>) =>
+  <T>(token: Token<T>): boolean =>
     isBound<T>(token.identifier);
 
 /**
@@ -103,14 +104,17 @@ export const tokenIsBound =
  */
 export const tokenRebinder =
   (rebind: inversify.Rebind) =>
-  <T>(token: Token<T>) =>
+  <T>(token: Token<T>): inversify.BindingToSyntax<T> =>
     rebind<T>(token.identifier);
 
+// eslint-disable-next-line @typescript-eslint/no-namespace
 export declare namespace interfaces {
+  /* eslint-disable @typescript-eslint/no-type-alias */
   type TokenBinder = ReturnType<typeof tokenBinder>;
   type TokenUnbinder = ReturnType<typeof tokenUnbinder>;
   type TokenIsBound = ReturnType<typeof tokenIsBound>;
   type TokenRebinder = ReturnType<typeof tokenRebinder>;
+  /* eslint-enable @typescript-eslint/no-type-alias */
 
   type TokenContainerModuleCallback = (
     bindToken: TokenBinder,
