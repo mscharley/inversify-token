@@ -40,9 +40,9 @@
     "inversify": "^6.0.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "16.0.2",
+    "@commitlint/cli": "16.1.0",
     "@commitlint/config-conventional": "16.0.0",
-    "@commitlint/prompt": "16.0.0",
+    "@commitlint/prompt": "16.1.0",
     "@mscharley/eslint-config": "1.7.0",
     "@mscharley/prettier-config": "1.2.0",
     "@types/node": "16.11.21",
