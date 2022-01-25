@@ -47,10 +47,6 @@ workflows:
     jobs:
       - lint
       - build:
-          name: dubnium
-          node_version: "10.24"
-          update_npm: true
-      - build:
           name: erbium
           node_version: "12.22"
           update_npm: true
@@ -64,7 +60,6 @@ workflows:
       - deploy:
           requires:
             - lint
-            - dubnium
             - erbium
             - fermium
             - gallium
