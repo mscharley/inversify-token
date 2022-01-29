@@ -1,9 +1,4 @@
-import {
-  AsyncContainerModule,
-  ContainerModule,
-  inject,
-  multiInject,
-} from 'inversify';
+import { AsyncContainerModule, ContainerModule, inject, multiInject } from 'inversify';
 import type { interfaces as inversify } from 'inversify';
 
 /**
@@ -29,27 +24,19 @@ export type TokenType<T extends Token<unknown>> = T['_witness'];
 /**
  * Get an item represented by a token from a container.
  */
-export const getToken = <T>(
-  container: inversify.Container,
-  token: Token<T>,
-): T => container.get<T>(token.identifier);
+export const getToken = <T>(container: inversify.Container, token: Token<T>): T => container.get<T>(token.identifier);
 
 /**
  * Get all items represented by a token from a container.
  */
-export const getAllToken = <T>(
-  container: inversify.Container,
-  token: Token<T>,
-): T[] => container.getAll<T>(token.identifier);
+export const getAllToken = <T>(container: inversify.Container, token: Token<T>): T[] =>
+  container.getAll<T>(token.identifier);
 
 /**
  * Get an item represented by a token with a given name.
  */
-export const getNamed = <T>(
-  container: inversify.Container,
-  token: Token<T>,
-  named: string | number | symbol,
-): T => container.getNamed<T>(token.identifier, named);
+export const getNamed = <T>(container: inversify.Container, token: Token<T>, named: string | number | symbol): T =>
+  container.getNamed<T>(token.identifier, named);
 
 /**
  * Get an item represented by a token with a tag.
@@ -64,16 +51,13 @@ export const getTagged = <T>(
 /**
  * Inject an item represented by a token.
  */
-export const injectToken = <T extends Token<unknown>>(
-  token: T,
-): ReturnType<typeof inject> => inject(token.identifier);
+export const injectToken = <T extends Token<unknown>>(token: T): ReturnType<typeof inject> => inject(token.identifier);
 
 /**
  * Inject multiple items represented by a token.
  */
-export const multiInjectToken = <T extends Token<unknown>>(
-  token: T,
-): ReturnType<typeof multiInject> => multiInject(token.identifier);
+export const multiInjectToken = <T extends Token<unknown>>(token: T): ReturnType<typeof multiInject> =>
+  multiInject(token.identifier);
 
 /**
  * Wrap a bind function to allow binding tokens.
@@ -142,12 +126,7 @@ export declare namespace interfaces {
 export class TokenContainerModule extends ContainerModule {
   public constructor(registry: interfaces.TokenContainerModuleCallback) {
     super((bind, unbind, isBound, rebind) => {
-      registry(
-        tokenBinder(bind),
-        tokenUnbinder(unbind),
-        tokenIsBound(isBound),
-        tokenRebinder(rebind),
-      );
+      registry(tokenBinder(bind), tokenUnbinder(unbind), tokenIsBound(isBound), tokenRebinder(rebind));
     });
   }
 }
@@ -162,12 +141,7 @@ export class TokenContainerModule extends ContainerModule {
 export class AsyncTokenContainerModule extends AsyncContainerModule {
   public constructor(registry: interfaces.AsyncTokenContainerModuleCallback) {
     super(async (bind, unbind, isBound, rebind) => {
-      await registry(
-        tokenBinder(bind),
-        tokenUnbinder(unbind),
-        tokenIsBound(isBound),
-        tokenRebinder(rebind),
-      );
+      await registry(tokenBinder(bind), tokenUnbinder(unbind), tokenIsBound(isBound), tokenRebinder(rebind));
     });
   }
 }

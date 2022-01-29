@@ -79,9 +79,7 @@ const testContainer = (c: interfaces.Container): void => {
 const runTests = async (): Promise<void> => {
   console.log('*** TESTING CONTAINER ***');
   const myContainer = new Container();
-  const containerBindToken = tokenBinder(
-    myContainer.bind.bind(myContainer) as typeof myContainer['bind'],
-  );
+  const containerBindToken = tokenBinder(myContainer.bind.bind(myContainer) as typeof myContainer['bind']);
   containerBindToken(TOKENS.ThrowableWeapon).to(Shuriken);
   containerBindToken(TOKENS.Warrior).to(Ninja);
   containerBindToken(TOKENS.Weapon).to(Katana);
