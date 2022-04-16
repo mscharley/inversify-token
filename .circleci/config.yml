@@ -47,10 +47,6 @@ workflows:
     jobs:
       - lint
       - build:
-          name: erbium
-          node_version: "12.22"
-          update_npm: true
-      - build:
           name: fermium
           node_version: "14.18"
           update_npm: true
@@ -60,7 +56,6 @@ workflows:
       - deploy:
           requires:
             - lint
-            - erbium
             - fermium
             - gallium
           filters:
