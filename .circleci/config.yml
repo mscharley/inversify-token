@@ -54,6 +54,7 @@ workflows:
           name: gallium
           node_version: "16.13"
       - deploy:
+          context: semantic-release
           requires:
             - lint
             - fermium
