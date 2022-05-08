@@ -47,7 +47,7 @@
     "@mscharley/prettier-config": "1.2.3",
     "@types/node": "16.11.33",
     "commitizen": "4.2.4",
-    "husky": "7.0.4",
+    "husky": "8.0.0",
     "inversify": "6.0.1",
     "reflect-metadata": "0.1.13",
     "semantic-release": "19.0.2",
