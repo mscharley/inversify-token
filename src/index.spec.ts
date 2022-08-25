@@ -40,6 +40,13 @@ class Katana implements Weapon {
 }
 
 @injectable()
+class SlicingKatana implements Weapon {
+  public hit(): string {
+    return 'slice!';
+  }
+}
+
+@injectable()
 class Shuriken implements ThrowableWeapon {
   public throw(): string {
     return 'hit!';
@@ -68,6 +75,17 @@ const testContainer = (c: interfaces.Container): void => {
   const ninja = getToken(c, TOKENS.Warrior);
 
   if (ninja.fight() !== 'cut! cut!') {
+    throw new Error('Unexpected value for ninja fighting!');
+  }
+  if (ninja.sneak() !== 'hit!') {
+    throw new Error('Unexpected value for ninja sneaking!');
+  }
+};
+
+const testReboundContainer = (c: interfaces.Container): void => {
+  const ninja = getToken(c, TOKENS.Warrior);
+
+  if (ninja.fight() !== 'slice! slice!') {
     throw new Error('Unexpected value for ninja fighting!');
   }
   if (ninja.sneak() !== 'hit!') {
@@ -121,6 +139,25 @@ const runTests = async (): Promise<void> => {
   });
   await asyncTokenModuleContainer.loadAsync(asyncTokenModule);
   testContainer(asyncTokenModuleContainer);
+
+  console.log('*** TESTING UNBOUND TOKEN MODULE ***');
+  const unboundTokenModuleContainer = new Container();
+  const unboundTokenModule = new TokenContainerModule((bindToken, unbindToken) => {
+    unbindToken(TOKENS.Weapon);
+    bindToken(TOKENS.Weapon).to(SlicingKatana);
+    bindToken(TOKENS.Weapon).to(SlicingKatana);
+  });
+  unboundTokenModuleContainer.load(tokenModule, unboundTokenModule);
+  testReboundContainer(unboundTokenModuleContainer);
+
+  console.log('*** TESTING REBOUND TOKEN MODULE ***');
+  const reboundTokenModuleContainer = new Container();
+  const reboundTokenModule = new TokenContainerModule((bindToken, _unbindToken, _isBoundToken, rebindToken) => {
+    rebindToken(TOKENS.Weapon).to(SlicingKatana);
+    bindToken(TOKENS.Weapon).to(SlicingKatana);
+  });
+  reboundTokenModuleContainer.load(tokenModule, reboundTokenModule);
+  testReboundContainer(reboundTokenModuleContainer);
 };
 
 runTests()
