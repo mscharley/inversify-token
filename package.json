@@ -46,7 +46,7 @@
     "@mscharley/eslint-config": "1.8.5",
     "@mscharley/prettier-config": "1.2.4",
     "@types/node": "16.18.7",
-    "commitizen": "4.2.5",
+    "commitizen": "4.2.6",
     "husky": "8.0.2",
     "inversify": "6.0.1",
     "reflect-metadata": "0.1.13",
