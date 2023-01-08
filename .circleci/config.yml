@@ -48,11 +48,14 @@ workflows:
       - lint
       - build:
           name: fermium
-          node_version: "14.18"
+          node_version: "14.21"
           update_npm: true
       - build:
           name: gallium
-          node_version: "16.13"
+          node_version: "16.18"
+      - build:
+          name: hydrogen
+          node_version: "18.12"
       - deploy:
           context: semantic-release
           requires:
