@@ -27,7 +27,7 @@ jobs:
   lint:
     executor:
       name: node/default
-      tag: "16.13"
+      tag: "18.12"
     steps:
       - checkout
       - run: npm install
@@ -35,7 +35,7 @@ jobs:
   deploy:
     executor:
       name: node/default
-      tag: "16.13"
+      tag: "18.12"
     steps:
       - checkout
       - run: npm install
