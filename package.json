@@ -45,7 +45,7 @@
     "@commitlint/prompt": "17.4.2",
     "@mscharley/eslint-config": "1.8.5",
     "@mscharley/prettier-config": "1.2.4",
-    "@types/node": "16.18.11",
+    "@types/node": "16.18.12",
     "commitizen": "4.3.0",
     "husky": "8.0.3",
     "inversify": "6.0.1",
