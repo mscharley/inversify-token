@@ -6,10 +6,10 @@ jobs:
   build:
     parameters:
       node_version:
-        description: "Node version to test."
+        description: 'Node version to test.'
         type: string
       update_npm:
-        description: "Whether to update npm to at least npm 7.x"
+        description: 'Whether to update npm to at least npm 7.x'
         default: false
         type: boolean
     executor:
@@ -27,7 +27,7 @@ jobs:
   lint:
     executor:
       name: node/default
-      tag: "18.12"
+      tag: '18.12'
     steps:
       - checkout
       - run: npm install
@@ -35,7 +35,7 @@ jobs:
   deploy:
     executor:
       name: node/default
-      tag: "18.12"
+      tag: '18.12'
     steps:
       - checkout
       - run: npm install
@@ -48,20 +48,21 @@ workflows:
       - lint
       - build:
           name: fermium
-          node_version: "14.21"
+          node_version: '14.21'
           update_npm: true
       - build:
           name: gallium
-          node_version: "16.18"
+          node_version: '16.18'
       - build:
           name: hydrogen
-          node_version: "18.12"
+          node_version: '18.12'
       - deploy:
           context: semantic-release
           requires:
             - lint
             - fermium
             - gallium
+            - hydrogen
           filters:
             branches:
               only: main
