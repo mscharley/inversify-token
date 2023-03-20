@@ -57,9 +57,9 @@ class Shuriken implements ThrowableWeapon {
 class Ninja implements Warrior {
   public constructor(
     @multiInjectToken(TOKENS.Weapon)
-    private readonly _katanas: Array<TokenType<typeof TOKENS['Weapon']>>,
+    private readonly _katanas: Array<TokenType<(typeof TOKENS)['Weapon']>>,
     @injectToken(TOKENS.ThrowableWeapon)
-    private readonly _shuriken: TokenType<typeof TOKENS['ThrowableWeapon']>,
+    private readonly _shuriken: TokenType<(typeof TOKENS)['ThrowableWeapon']>,
   ) {}
 
   public fight(): string {
@@ -97,7 +97,7 @@ const testReboundContainer = (c: interfaces.Container): void => {
 const runTests = async (): Promise<void> => {
   console.log('*** TESTING CONTAINER ***');
   const myContainer = new Container();
-  const containerBindToken = tokenBinder(myContainer.bind.bind(myContainer) as typeof myContainer['bind']);
+  const containerBindToken = tokenBinder(myContainer.bind.bind(myContainer) as (typeof myContainer)['bind']);
   containerBindToken(TOKENS.ThrowableWeapon).to(Shuriken);
   containerBindToken(TOKENS.Warrior).to(Ninja);
   containerBindToken(TOKENS.Weapon).to(Katana);
