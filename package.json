@@ -51,6 +51,6 @@
     "inversify": "6.0.1",
     "reflect-metadata": "0.1.13",
     "semantic-release": "21.0.3",
-    "typescript": "5.0.4"
+    "typescript": "5.1.3"
   }
 }
