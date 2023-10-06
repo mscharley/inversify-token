@@ -9,7 +9,7 @@
 **Bugs/Support:** [Github Issues][gh-issues]  
 **Copyright:** 2021  
 **License:** [MIT license][license]  
-**Status:** Active
+**Status:** Deprecated - if you like this project, then checkout [DOT](https://github.com/mscharley/dot) as a replacement for your IOC needs.
 
 ## Synopsis
 
